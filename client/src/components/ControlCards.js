@@ -3,10 +3,13 @@ import UnsyncedGamesCard from './UnsyncedGamesCard.js'
 import SyncedGamesCard from './SyncedGamesCard.js'
 import GameUtilities from './GameUtilities.js'
 import GameMapper from './GameMapper.js'
+import GameCheckboxMapper from './GameCheckboxMapper.js'
+import GameErrorHandler from './GameErrorHandler.js'
+
 
 const baseUrl = window.location.hostname === 'localhost' ?
   window.location.protocol + '//' + document.domain + ':2890/':
-  window.location.protocol + '//' + document.domain + ':2890/'
+  window.location.protocol + '//' + document.domain + '/'
 
 class ControlCards extends React.Component {
   constructor(props) {
@@ -23,20 +26,22 @@ class ControlCards extends React.Component {
       userSearch: ''
     }
   }
-  handleChecked() {
-
+  handleChecked(gameName) {
+    let checkedGames = this.state.checkedGames
+    if (gameName in checkedGames) {
+      checkedGames[gameName] = !checkedGames[gameName]
+    }
+    this.setState({checkedGames})
   }
   searchUnsynced() {
     fetch(baseUrl + 'api/games?all_games=no&user_id=no_id')
       .then(res => res.json()
         .then(games => {
-          if (games['message'] === 'No games found on this machine') {
-            alert(games['message'])
-          }
-          else {
-            games = GameMapper(games['game_list'])
-            this.setState({games})
-          }
+          GameErrorHandler(games)
+          let checkedGames = GameCheckboxMapper(games)
+          this.setState({checkedGames})
+          games = GameMapper(games, this.handleChecked)
+          this.setState({games})
         })
       )
       .catch(e => {
@@ -47,16 +52,11 @@ class ControlCards extends React.Component {
     fetch(baseUrl + 'api/games?all_games=no&user_id=' + userID)
       .then(res => res.json()
         .then(games => {
-            if (games['message'] === 'No games found on this machine') {
-              alert(games['message'])
-            }
-            if (games['message'] === 'The id/url you submitted is either incorrect or invalid') {
-              alert(games['message'])
-            }
-            else {
-              games = GameMapper(games['game_list'])
-              this.setState({games})
-            }
+            GameErrorHandler(games)
+            let checkedGames = GameCheckboxMapper(games)
+            this.setState({checkedGames})
+            games = GameMapper(games, this.handleChecked)
+            this.setState({games})
         })
       )
       .catch(e => {
