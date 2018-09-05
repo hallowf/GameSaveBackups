@@ -1,6 +1,14 @@
 import React from "react"
 
 class GameCard extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  callHandleChecked(event) {
+
+  }
+
   render() {
     return(
       <div className='col-sm-3 p-3'>
@@ -20,7 +28,7 @@ class GameCard extends React.Component {
             </p>
             <p>
               <label className="btn btn-secondary active">
-                <input className ="checkbox" containerstyle="margin:1em auto" type="checkbox" autoComplete="off"/>
+                <input className ="checkbox" defaultValue=this.props.checkedValue.get(this.props.gameName) onChange={this.callHandleChecked.bind(this)} containerstyle="margin:1em auto" type="checkbox" autoComplete="off"/>
                 <a>Backup</a>
               </label>
             </p>

@@ -1,7 +1,6 @@
 import React from 'react'
 import UnsyncedGamesCard from './UnsyncedGamesCard.js'
 import SyncedGamesCard from './SyncedGamesCard.js'
-import GameCard from './GameCard.js'
 import GameUtilities from './GameUtilities.js'
 import GameMapper from './GameMapper.js'
 
@@ -16,11 +15,16 @@ class ControlCards extends React.Component {
     this.searchSynced = this.searchSynced.bind(this)
     this.cleanGames = this.cleanGames.bind(this)
     this.searchFilter = this.searchFilter.bind(this)
+    this.handleChecked = this.handleChecked.bind(this)
     this.state = {
       games: '',
       filteredGames: '',
+      checkedGames: [],
       userSearch: ''
     }
+  }
+  handleChecked() {
+
   }
   searchUnsynced() {
     fetch(baseUrl + 'api/games?all_games=no&user_id=no_id')
