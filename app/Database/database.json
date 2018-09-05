@@ -1,0 +1,156 @@
+[
+    [
+        "Dying Light",
+        "~\\Documents\\DyingLight",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\239140\\remote\\out\\save",
+        "~/.Dying Light/",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Mount & Blade Warband",
+        "~\\Documents\\mbwarband",
+        "Not available",
+        "~/.mbwarband/Savegames/Native",
+        "Not available"
+    ],
+    [
+        "Shadow of Mordor",
+        "~\\Documents\\Shadow of Mordor\\saves",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "The Witcher",
+        "~\\Documents\\The Witcher\\saves",
+        "Not available",
+        "Not for linux",
+        "Not available"
+    ],
+    [
+        "The Witcher 2 Assassins of Kings",
+        "~\\Documents\\Witcher 2\\gamesaves",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\20920\\remote\\",
+        "~/.local/share/cdprojektred/witcher2/GameDocuments/Witcher 2/gamesaves/",
+        "~/.local/share/Steam/userdata/XXXXX/20920/remote"
+    ],
+    [
+        "Space Engineers",
+        "~\\AppData\\Roaming\\SpaceEngineers\\Saves",
+        "Not available",
+        "NFL",
+        "Not available"
+    ],
+    [
+        "Medieval Engineers",
+        "~\\AppData\\Roaming\\MedievalEngineers\\Saves",
+        "Not available",
+        "NFL",
+        "Not available"
+    ],
+    [
+        "Kane & Lynch Dead Men",
+        "~\\AppData\\Local\\kaneandlynch1",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Kane & Lynch 2 Dog Days",
+        "~\\Documents\\Square Enix\\Kane & Lynch 2 - Dog Days",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Shadow Warrior DX11",
+        "~\\Documents\\Shadow Warrior DX11\\profiles",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Sorcerer King Rivals",
+        "~\\Documents\\My Games\\SorcererKingRivals",
+        "Not available",
+        "NFL",
+        "Not available"
+    ],
+    [
+        "My summer car",
+        "~\\AppData\\LocalLow\\Amistech\\My Summer Car",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Just cause 2",
+        "~\\Documents\\Square Enix\\Just Cause 2\\Saves",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\8190\\remote",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Just cause 3",
+        "~\\Documents\\Square Enix\\Just Cause 3\\Saves",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Tomb Raider Anniversary",
+        "~\\Documents\\Eidos\\Tomb Raider - Anniversary\\",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Tomb Raider Legend",
+        "~\\Documents\\Eidos\\Tomb Raider - Legend\\",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Tomb Raider Underworld",
+        "~\\Documents\\Eidos\\Tomb Raider - Underworld\\",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Fallout 4",
+        "~\\Documents\\My Games\\Fallout4\\Saves",
+        "Not available",
+        "NFL",
+        "Not available"
+    ],
+    [
+        "State of Decay Year-one",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\State of Decay YOSE\\",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Saints Row 2",
+        "~\\AppData\\LocalLow\\THQ\\Saints Row 2",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ],
+    [
+        "Cities Skylines",
+        "~\\AppData\\Local\\Colossal Order\\Cities_Skylines\\Saves",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\255710\\remote",
+        "/.local/share/Collosal Order/Cities_skylines/Saves",
+        "~./steam/steam/userdata/XXXXX/255710/remote/"
+    ],
+    [
+        "Portal 2",
+        "C:\\SteamLibrary\\steamapps\\common\\Portal 2\\portal2\\SAVE",
+        "C:\\Program Files (x86)\\Steam\\userdata\\XXXXX\\lel",
+        "NFL",
+        "~./steam/steam/userdata/XXXXX/game/remote/"
+    ]
+]

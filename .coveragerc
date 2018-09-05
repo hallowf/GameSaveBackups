@@ -1,0 +1,43 @@
+# .coveragerc to control coverage.py
+[run]
+branch = True
+source = app
+omit =
+
+    # Not implemented
+      app/backup_generator.py
+
+    # Virtualenvs
+      env/*
+      venv/*
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+    pragma: no win cover
+
+    # Don't complain about missing debug-only code:
+    def __repr__
+    if self\.debug
+
+    # Don't complain about windows checks:
+    if current_os.upper() == "WINDOWS":
+
+    # Don't complain about flask send_from_directory
+    return send_from_directory(.*)
+
+
+    # Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run:
+    if 0:
+    if __name__ == .__main__.:
+
+ignore_errors = True
+
+[html]
+directory = htmlcov

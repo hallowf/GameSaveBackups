@@ -1,0 +1,12 @@
+{
+  "cacheDirectories": ["client/build", "app/static/build/"],
+  "engines": {
+    "node": "10.x",
+    "npm": "6.x.x"
+  },
+  "scripts": {
+  "postinstall": "npm install --prefix client",
+  "build-assets": "npm run-script build --prefix client",
+  "heroku-postbuild": "npm run-script build --prefix client && cp -r client/build/ app/static"
+  }
+}
