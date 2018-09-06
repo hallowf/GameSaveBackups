@@ -8,17 +8,17 @@ FLASK_ENV = os.environ.get("FLASK_ENV", "production")
 
 ### App parameters
 app.config.update(
-    ENV = FLASK_ENV,
-    SECRET_KEY = 'secret!'
+    SECRET_KEY = os.urandom(16)
 )
 
 
-
+### Check if in development or production and configure testing or sentry accordingly
 if FLASK_ENV == "development":
     app.config["TESTING"] = True
 else:
     sentry = Sentry(app, dsn='https://0fefacd0609d400981c0ddec3fbe806b:47f1ea6778ad45d28e928c3bfb945c67@sentry.io/1264488')
 
+### Configure cross-origin requests on api backend
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 

@@ -1,7 +1,9 @@
 import os , pickle
 import json
 import platform
+from app.Database.db_utilities import simple_pickler, game_checker
 from app.utilities.id_converter import convert_id
+
 
 ### Check OS
 current_os = platform.system()
@@ -14,20 +16,6 @@ if current_os.upper() == "WINDOWS": # pragma: no win cover
     import win32api
 else:
     pass
-
-
-### Simple function for pickling the games and the respective paths when they're found,
-### to avoid making more calls to database
-def simple_pickler(object , mode="write", path="game_paths.pckl"):
-    if mode == "write":
-        with open(path, "wb") as pckl:
-            pickle.dump(object, pckl, protocol=pickle.HIGHEST_PROTOCOL)
-    elif mode == "read":
-        with open(path, "rb") as pckl:
-            paths = pickle.load(pckl)
-            return paths
-    else:
-        return [{"Error": "parameter mode must be either 'write' or 'read'"}]
 
 
 ### class for constructing game objects
@@ -87,15 +75,11 @@ def get_unsynced_games(gameDatabase = save_database, gsb_test = GSB_TEST):
     for game in gameDatabase:
         game.found = False
         if os.path.isdir(game.path) and game.found == False:
-            game.found = True
-            game_dict = { game.name: {"game_path": game.path, "game_sync_path": game.sync_path}}
-            game_paths.append(game_dict)
-            g.append(game.to_dict())
+            game_checker(game, g, game_paths, "no", None)
     if not g:
         return [{"Error": "No games found on this machine"}]
     else:
-        with open("game_paths.pckl", "wb") as pckl:
-            pickle.dump(game_paths, pckl, protocol=pickle.HIGHEST_PROTOCOL)
+        simple_pickler("write", game_paths)
         return g
 
 
@@ -119,28 +103,20 @@ def get_synced_games(user_id, gameDatabase = save_database, gsb_test = GSB_TEST)
             new_sync = game.sync_path.replace("XXXXX", str(user_id))
             for drive in drive_letters:
                 if os.path.isdir(new_sync) and game.found == False:
-                    game.sync_path = new_sync
                     print("Found " + game.name + " at " + game.sync_path)
-                    game.found = True
-                    game_dict = { game.name: {"game_path": game.path, "game_sync_path": game.sync_path}}
-                    game_paths.append(game_dict)
-                    g.append(game.to_dict())
+                    game_checker(game, g, game_paths, "yes", new_sync)
                 else:
                     new_path = new_sync.replace("C:\\", drive)
                     if os.path.isdir(new_path) and game.found == False:
                         print("Found " + game.name + " at " + new_path)
-                        game.found = True
                         game.sync_path = new_path
-                        game_dict = { game.name: {"game_path": game.path, "game_sync_path": game.sync_path}}
-                        game_paths.append(game_dict)
-                        g.append(game.to_dict())
+                        game_checker(game, g, game_paths, "yes", new_sync)
                     elif os.path.isdir(new_path) == False and game.found == False:
                         print("Couldn't find " + game.name + " at " + new_path)
         if not g:
             return  [{"Error": "No games found on this machine"}]
         else:
-            with open("game_paths.pckl", "wb") as pckl:
-                pickle.dump(game_paths, pckl, protocol=pickle.HIGHEST_PROTOCOL)
+            simple_pickler("write", game_paths)
             return g
     else:
         for game in gameDatabase:
@@ -148,14 +124,9 @@ def get_synced_games(user_id, gameDatabase = save_database, gsb_test = GSB_TEST)
             new_sync = game.sync_path.replace("XXXXX", str(user_id))
             if os.path.isdir(new_sync) and game.found == False:
                 print("Found game at:" + new_sync)
-                game.found = True
-                game.sync_path = new_sync
-                game_dict = { game.name: {"game_path": game.path, "game_sync_path": game.sync_path}}
-                game_paths.append(game_dict)
-                g.append(game.to_dict())
+                game_checker(game, g, game_paths, "yes", new_sync)
         if not g:
             return [{"Error": "No games found on this machine"}]
         else:
-            with open("game_paths.pckl", "wb") as pckl:
-                pickle.dump(game_paths, pckl, protocol=pickle.HIGHEST_PROTOCOL)
+            simple_pickler("write", game_paths)
             return g
