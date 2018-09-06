@@ -74,4 +74,4 @@ def delete_from_list(games, name):
 #check_if_zipped(pickle.load(open("games.pckl", "rb")))
 #print(read_zip_file("ZippedBackups.zip"))
 #delete_from_list(pickle.load(open("games.pckl", "rb")))
-append_to_zip(pickle.load(open("games.pckl", "rb")))
+##append_to_zip(pickle.load(open("games.pckl", "rb")))
