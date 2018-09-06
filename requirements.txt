@@ -2,7 +2,6 @@ codecov
 coverage
 eventlet
 flask
-flask_socketio
 flask-cors
 raven[flask]
 steam

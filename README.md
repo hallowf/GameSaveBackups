@@ -14,10 +14,12 @@ You will need the following packages:
 
   1. steam
   2. flask
-  3. flask-socketio
-  4. win32api **Only for windows OS**
+  3. flask-cors
+  4. pywin32  **win32api Only for windows OS**
   5. eventlet
-  6. flask-cors
+  6. codecov
+  7. coverage
+  8. raven[flask]
 
 ### Building
 
@@ -61,9 +63,3 @@ https://github.com/eventlet/eventlet/blob/master/LICENSE
 #### React
 
 https://github.com/facebook/react/blob/master/LICENSE
-
-### Game Images
-
-The game screenshots included where all taken by me during gameplay, so all rights
-belong to the respective companies who produced the content I own none of the graphical
-content that's displayed in the program except for the ones that aren't mentioned in Sources
