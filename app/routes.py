@@ -4,7 +4,7 @@ from app.Database.fetch_all_games import get_synced_games, get_unsynced_games
 from app.errorHandling.raise_invalid_usage import InvalidUsage
 from app.commonResponses.game_array_response import return_game_array
 from app.utilities.id_converter import convert_id
-import os
+import os, json
 
 
 ### Register Error handler
@@ -101,5 +101,10 @@ def game_responses():
 
 @app.route("/api/backup", methods=["POST"])
 def backup_games():
-    print(request.data)
+    game_list = json.loads(request.data)
+    games_to_backup = []
+    for game in game_list:
+        if game_list[game] == True:
+            games_to_backup.append(game)
+    print(games_to_backup)
     return "ok"
