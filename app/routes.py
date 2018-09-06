@@ -53,7 +53,7 @@ def serve_game_screenshots(path):
 
 
 @app.route("/api/games")
-def games():
+def game_responses():
     # Get all arguments
     user_id = request.args.get("user_id")
     all_games = request.args.get("all_games")
@@ -98,3 +98,8 @@ def games():
                 raise InvalidUsage(synced_array, status_code=418)
             else:
                 return jsonify(synced_array)
+
+@app.route("/api/backup", methods=["POST"])
+def backup_games():
+    print(request.data)
+    return "ok"
