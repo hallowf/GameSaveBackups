@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, send_from_directory
 from app import app
+from app.Database.db_utilities import simple_pickler
 from app.Database.fetch_all_games import get_synced_games, get_unsynced_games
 from app.errorHandling.raise_invalid_usage import InvalidUsage
 from app.commonResponses.game_array_response import return_game_array
@@ -102,9 +103,13 @@ def game_responses():
 @app.route("/api/backup", methods=["POST"])
 def backup_games():
     game_list = json.loads(request.data)
-    games_to_backup = []
-    for game in game_list:
-        if game_list[game] == True:
-            games_to_backup.append(game)
-    print(games_to_backup)
+    game_paths = simple_pickler(mode="read")
+    games_received = [ game for i, game in enumerate(game_list) if game_list[game] == True]
+    # for game in game_list:
+    #     if game_list[game] == True:
+    #         games_received.append(game)
+    # for game in games_to_backup:
+    #     pass
+        #if game in games_to_backup.keys()
+    print(games_received)
     return "ok"
