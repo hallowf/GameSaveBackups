@@ -1,8 +1,9 @@
 function GameCheckboxMapper(checkedGames) {
+  let checkedArray = {}
   checkedGames['game_list'].forEach(function(game){
-    checkedGames[game.name] = false
+    checkedArray[game.name] = false
   })
-  return checkedGames
+  return checkedArray
 }
 
 export default GameCheckboxMapper

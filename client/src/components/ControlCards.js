@@ -19,10 +19,11 @@ class ControlCards extends React.Component {
     this.cleanGames = this.cleanGames.bind(this)
     this.searchFilter = this.searchFilter.bind(this)
     this.handleChecked = this.handleChecked.bind(this)
+    this.requestBackup = this.requestBackup.bind(this)
     this.state = {
       games: '',
       filteredGames: '',
-      checkedGames: [],
+      checkedGames: {},
       userSearch: ''
     }
   }
@@ -88,13 +89,22 @@ class ControlCards extends React.Component {
     })
     this.setState({filteredGames: filteredGames})
   }
-
+  requestBackup() {
+    let checkedGames = this.state.checkedGames
+    console.log(checkedGames)
+    checkedGames = JSON.stringify(checkedGames)
+    fetch(baseUrl + 'api/backup',
+    {
+      method: 'POST',
+      body: checkedGames
+    })
+  }
   render() {
     let gamesJsx = null
     let gameUtilities = null
     if (this.state.games !== '') {
       gamesJsx = this.state.games
-      gameUtilities = <GameUtilities cleanGames={this.cleanGames} searchFilter={this.searchFilter} />
+      gameUtilities = <GameUtilities cleanGames={this.cleanGames} requestBackup={this.requestBackup} searchFilter={this.searchFilter} />
     }
     if (this.state.userSearch !== '') {
       gamesJsx = this.state.filteredGames
