@@ -1,24 +1,28 @@
 jobs:
   include:
-    - stage: unit tests and coverage
-      language: python
-      python:
-        "3.6"
-      before_script: python -m unittest
-      script: coverage run -m unittest
-      after_success: codecov -t $CODECOV_KEY
-    - stage: npm build
-      language: node_js
-      node_js:
-        "10"
-      script: npm run-script --prefix client build
-    - stage: deploy
-      script: skip
-      deploy: &heroku
-        provider: heroku
-        api_key:
-          secure: GR9fFhtx6tRlGkTvDM5beVAnBY+TV66NPhgmD2tqtdkkxt3JfqwnVw0WC7XzWp5e39xJd04Rpd+cfmNUVvGXTPVzjv8NMwbIQuv1UPucgZMcwGdR6wqU7oz9H4SRp/cYo10ECWM6Yqa3tFOPDSQ5Tzp9vyWnMqERh88ReVyi1RQoMU8C+yVQN6Ip/pg+WS8zooCGQKg8qPtTlHrgAFaVaOfkzcLpsGcv+K2WOL40FbLCwnZCvDZarttURmIIslgUxcWYYbxwukm3YbQGmbhwWRQFjL9x0kxQ4JrkU0NApSIRtb4/BFL6gcziWoN4YUDvKITwZdSCvJG+VkCxsjSu0nH/MTw9/JrdqbDbSDmtGAmTjbCUkqtI3S0QGVtGSzltsf2DUqbZb8lhNZAjmBp3aSX8Ol8GKtct84iAInvIqDk9jMO3KGCzTAL0wRI/5GB21IV+dHCTfQtSy6BYj+oADg7qQI4U9GYNACSNSPy/6kU0J29kZJPGkz8qx7PWdYgsdFdDrd88QVdG2edyNTgONMpWLR0xcmdUNh9T5DyE/UdnRvHHPvRZgt7+S1CPon/Dy+cdNDZjm7qahmBrO9aJhY2Rr0f1NaapbXYj/u7VjAQyoeZXkoZnM0eBnR9DPCd3FF5lngKbOeuW/fnk6lS66AL5Wau3RkoPNynjJYUsvpQ=
-        app: flask-react-2890
-        on:
-          repo: hallowf/GameSaveBackups
-          branch: master
+  - stage: unit tests and coverage
+    language: python
+    python: '3.6'
+    before_script: python -m unittest
+    script: coverage run -m unittest
+    after_success: codecov -t $CODECOV_KEY
+  - stage: npm build
+    language: node_js
+    node_js: '10'
+    script: npm run-script --prefix client build
+  - stage: deploy
+    script: skip
+    deploy:
+      provider: heroku
+      api_key:
+        secure: GR9fFhtx6tRlGkTvDM5beVAnBY+TV66NPhgmD2tqtdkkxt3JfqwnVw0WC7XzWp5e39xJd04Rpd+cfmNUVvGXTPVzjv8NMwbIQuv1UPucgZMcwGdR6wqU7oz9H4SRp/cYo10ECWM6Yqa3tFOPDSQ5Tzp9vyWnMqERh88ReVyi1RQoMU8C+yVQN6Ip/pg+WS8zooCGQKg8qPtTlHrgAFaVaOfkzcLpsGcv+K2WOL40FbLCwnZCvDZarttURmIIslgUxcWYYbxwukm3YbQGmbhwWRQFjL9x0kxQ4JrkU0NApSIRtb4/BFL6gcziWoN4YUDvKITwZdSCvJG+VkCxsjSu0nH/MTw9/JrdqbDbSDmtGAmTjbCUkqtI3S0QGVtGSzltsf2DUqbZb8lhNZAjmBp3aSX8Ol8GKtct84iAInvIqDk9jMO3KGCzTAL0wRI/5GB21IV+dHCTfQtSy6BYj+oADg7qQI4U9GYNACSNSPy/6kU0J29kZJPGkz8qx7PWdYgsdFdDrd88QVdG2edyNTgONMpWLR0xcmdUNh9T5DyE/UdnRvHHPvRZgt7+S1CPon/Dy+cdNDZjm7qahmBrO9aJhY2Rr0f1NaapbXYj/u7VjAQyoeZXkoZnM0eBnR9DPCd3FF5lngKbOeuW/fnk6lS66AL5Wau3RkoPNynjJYUsvpQ=
+      app: flask-react-2890
+      on:
+        repo: hallowf/GameSaveBackups
+        branch: master
+notifications:
+  slack:
+    secure: uXnVT4Tm1CVlVBEjA1vcqy+m/frQQ26KJdY8N6EIbT2dCNqaOqcnhlv3nusR3etezFti6bvSYQWzHM3t++y1aeM85uH6lY3PeWBafSdbbhf+9OXnn/YPznQqPRS4C7DB6wnNIb85QWEbXmFvluDlco5/mgFS6I2bYnCKEJeOo1TKkGkyQAJosgy2rCz0DBahiugxSmW8CikZdzawt63GDbmi6/nRhp++Zl+lC8nxGMzCo2o5zCwhMKpjZTeLvJSimKy8nKwzt0JnJ9jOtTu6pp2TrXvsHmfPnEtMj8+Yv9UzWKxYcWCHOEtWB6p3G0vJDKLQZ+RXN2ulXZkpsFLdVtfqM5VcdQf7+zEn/SXghugf9sAYO5W6v7oABSvzKfJHkzxaJUAaqEDZX3db2fC+85F4pdDu3FdQXax/UpgH7epS2BhPrsNxXqPjUv+Ul2JHj2UgOmLi6+ejLb6wPv4hK96tKczYFwjc4GR+2sC2lNCtjlj2aAaNlT6w0FDZ/QykVHgaPGX7HkKS5y+UryYLCW/aezxtzE6Hc1z4dSKJhv+R+IQ08X/To2iGv5mwutI1f+gxRRQWoimO6R+foVAVbndiXPc7CSu8dP3gTOjM/XRT58FyHCqwZ1WpVkdEo+JMXXYf85Aphx859fo/nZ6tUB2gCqiq9fxtqMG5O44c6yM=
+  webhooks:
+    urls:
+    - https://www.vivifyscrum.com/ciintegrations/travis/ecb57f6c622c5c428a866cdefb7be594
