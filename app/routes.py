@@ -79,6 +79,8 @@ def game_responses():
     # Return game array based in arguments
     if user_id == "no_id":
         unsynced_array = return_game_array(unsynced_games)
+        for game in unsynced_array["game_list"]:
+            game["sync_path"] = "Not synced"
         if unsynced_array == "No games found on this machine":
             raise InvalidUsage(unsynced_array, status_code=418)
         else:
@@ -95,6 +97,8 @@ def game_responses():
         else:
             ## ** all_games = No, user_id = (user input) ** ##
             synced_array = return_game_array(synced_games)
+            for game in synced_array["game_list"]:
+                game.path = game.sync_path
             if synced_array == "No games found on this machine":
                 raise InvalidUsage(synced_array, status_code=418)
             else:
@@ -102,7 +106,7 @@ def game_responses():
 
 @app.route("/api/backup", methods=["POST"])
 def backup_games():
-    game_list = json.loads(request.data)
+    game_list = json.loads(request.data.decode("utf-8"))
     game_paths = simple_pickler(mode="read")
     games_received = [ game for i, game in enumerate(game_list) if game_list[game] == True]
     # for game in game_list:

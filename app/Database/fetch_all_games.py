@@ -14,8 +14,6 @@ GSB_TEST = os.environ.get('GSB_TEST', "0")
 ### If on windows import win32api
 if current_os.upper() == "WINDOWS": # pragma: no win cover
     import win32api
-else:
-    pass
 
 
 ### class for constructing game objects
@@ -68,7 +66,9 @@ def get_unsynced_games(gameDatabase = save_database, gsb_test = GSB_TEST):
     game_paths = []
     if gsb_test == "1":
         for game in gameDatabase:
-            g.append(game.to_dict())
+            game_checker(game, g, game_paths, "no", None)
+            simple_pickler("write", game_paths)
+            #g.append(game.to_dict())
         return g
     if gsb_test == "2":
         return [{"Error": "No games found on this machine"}]
@@ -92,7 +92,8 @@ def get_synced_games(user_id, gameDatabase = save_database, gsb_test = GSB_TEST)
     game_paths = []
     if gsb_test == "1":
         for game in gameDatabase:
-            g.append(game.to_dict())
+            game_checker(game, g, game_paths, "no", None)
+            simple_pickler("write", game_paths)
         return g
     if gsb_test == "2": # pragma: no cover
         return [{"Error": "No games found on this machine"}]
