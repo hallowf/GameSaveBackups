@@ -15,6 +15,8 @@ def copy_saves_toTmp(games):
                 print("Copying {} save files".format(game["name"]))
                 shutil.copytree(game["path"], tmp_path + "/" + game["name"])
                 print("Done")
+            else:
+                return [{"Error": "Unable to find path you are either in a testing environment or a internal error occured"}]
     else:
         raise ValueError("Games parameter must be a list with dicts containing game attributtes")
 
@@ -34,6 +36,8 @@ def make_zip_file(filename="ZippedBackups.zip"):
 
 def read_zip_file(zipped="ZippedBackups.zip"):
     games = []
+    if zipped.endswith() == False:
+        zipped = zipped + ".zip"
     zip_file = zipfile.ZipFile(zipped, "r")
     for folder in zip_file.namelist():
         if folder.endswith("/") == True and folder.count("/") == 1 and folder != "./":
