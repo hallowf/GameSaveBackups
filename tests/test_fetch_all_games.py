@@ -30,7 +30,7 @@ if current_os.upper() == "WINDOWS": # pragma: no win cover
     expected_synced_dict= [{"path": "WinPath1", "sync_path": "yes", "found": True, "name": "Game 1"}]
 else:
     expected_unsynced_dict = [{"path": "LinPath1", "sync_path": "no", "found": True, "name": "Game 1"}]
-    expected_unsynced_dict = [{"path": "LinPath1", "sync_path": "yes", "found": True, "name": "Game 1"}]
+    expected_synced_dict = [{"path": "LinPath1", "sync_path": "yes", "found": True, "name": "Game 1"}]
 
 
 
@@ -54,7 +54,7 @@ class fetchAllGamesTestCase(unittest.TestCase):
             self.assertEqual("LinPath1", load_game(test_database[0]).path, "The path attribute should be equal to Lin/Path1")
 
     def test_get_unsyced_games(self):
-        self.assertCountEqual(expected_unsynced_dict, get_unsynced_games(test_games, 0), "This should return the variable expected_game_dict")
+        self.assertCountEqual(expected_unsynced_dict, get_unsynced_games(test_games, 0), "This should return the variable expected_unsynced_dict")
 
     def test_get_synced_games(self):
         self.assertCountEqual(expected_synced_dict, get_synced_games("STEAM_0:1:35807358", test_games, 0), 'message')
