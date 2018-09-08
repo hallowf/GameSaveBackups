@@ -16,8 +16,11 @@ def simple_pickler(mode, object=False , path="game_paths.pckl"):
 ### the modified versions
 def game_checker(game_obj, game_list, game_paths, synced, path_to_sync):
     if synced == "yes" and path_to_sync is not None:
-        game_obj.sync_path = path_to_sync
+        game_obj.path = path_to_sync
+        game_obj.sync_path = "yes"
+    else:
+        game_obj.sync_path = "no"
     game_obj.found = True
-    game_dict = { game_obj.name: {"game_path": game_obj.path, "game_sync_path": game_obj.sync_path}}
+    game_dict = { "name": game_obj.name, "path": game_obj.path}
     game_paths.append(game_dict)
     game_list.append(game_obj.to_dict())

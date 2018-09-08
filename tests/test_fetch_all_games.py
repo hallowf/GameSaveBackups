@@ -26,9 +26,11 @@ test_games = list(map(load_game, test_database))
 
 ## Check the os and match the paths accordingly
 if current_os.upper() == "WINDOWS": # pragma: no win cover
-    expected_game_dict = [{"path": "WinPath1", "sync_path": "WinPath1", "found": True, "name": "Game 1"}]
+    expected_unsynced_dict = [{"path": "WinPath1", "sync_path": "no", "found": True, "name": "Game 1"}]
+    expected_synced_dict= [{"path": "WinPath1", "sync_path": "yes", "found": True, "name": "Game 1"}]
 else:
-    expected_game_dict = [{"path": "LinPath1", "sync_path": "LinPath1", "found": True, "name": "Game 1"}]
+    expected_unsynced_dict = [{"path": "LinPath1", "sync_path": "no", "found": True, "name": "Game 1"}]
+    expected_unsynced_dict = [{"path": "LinPath1", "sync_path": "yes", "found": True, "name": "Game 1"}]
 
 
 
@@ -45,7 +47,6 @@ class fetchAllGamesTestCase(unittest.TestCase):
     def test_load_games(self):
         self.assertEqual("Game 1", load_game(test_database[0]).name, "The game name should be Game 1")
 
-
     def test_load_games_path_change(self):
         if current_os.upper() == "WINDOWS": # pragma: no win cover
             self.assertEqual("WinPath1", load_game(test_database[0]).path, "The path attribute should be equal to Win/Path1")
@@ -53,7 +54,7 @@ class fetchAllGamesTestCase(unittest.TestCase):
             self.assertEqual("LinPath1", load_game(test_database[0]).path, "The path attribute should be equal to Lin/Path1")
 
     def test_get_unsyced_games(self):
-        self.assertCountEqual(expected_game_dict, get_unsynced_games(test_games, 0), "This should return the variable expected_game_dict")
+        self.assertCountEqual(expected_unsynced_dict, get_unsynced_games(test_games, 0), "This should return the variable expected_game_dict")
 
     def test_get_synced_games(self):
-        self.assertCountEqual(expected_game_dict, get_synced_games("STEAM_0:1:35807358", test_games, 0), 'message')
+        self.assertCountEqual(expected_synced_dict, get_synced_games("STEAM_0:1:35807358", test_games, 0), 'message')

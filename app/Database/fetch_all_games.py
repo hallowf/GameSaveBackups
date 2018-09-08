@@ -110,7 +110,6 @@ def get_synced_games(user_id, gameDatabase = save_database, gsb_test = GSB_TEST)
                     new_path = new_sync.replace("C:\\", drive)
                     if os.path.isdir(new_path) and game.found == False:
                         print("Found " + game.name + " at " + new_path)
-                        game.sync_path = new_path
                         game_checker(game, g, game_paths, "yes", new_sync)
                     elif os.path.isdir(new_path) == False and game.found == False:
                         print("Couldn't find " + game.name + " at " + new_path)
