@@ -18,13 +18,13 @@ class GameUtilities extends React.Component {
 
   render() {
     return (
-      <div className='container'>
+      <div className='container mx-auto'>
         <div className='row justify-content-between'>
           <div className='col-2'>
             <button className='btn btn-primary' onClick={this.callCleanGames} type='submit'>Clear</button>
           </div>
           <div className='col-2'>
-            <button className='btn btn-primary' onClick={this.props.requestBackup} type='submit'>Clear</button>
+            <button className='btn btn-primary' onClick={this.props.requestBackup} type='submit'>Backup Games</button>
           </div>
           <div className='col-4'>
             <div className="input-group">
