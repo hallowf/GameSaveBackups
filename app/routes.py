@@ -5,6 +5,7 @@ from app.Database.fetch_all_games import get_synced_games, get_unsynced_games
 from app.errorHandling.raise_invalid_usage import InvalidUsage
 from app.commonResponses.game_array_response import return_game_array
 from app.utilities.id_converter import convert_id
+from app.utilities.backup_generator import make_backups_to_zip
 import os, json
 
 
@@ -60,7 +61,8 @@ def game_responses():
     all_games = request.args.get("all_games")
     route_testing = request.args.get("route_testing")
 
-    # Check if in testing mode
+
+    #### Check if in testing mode
     if route_testing == "1":
         unsynced_games = get_unsynced_games(gsb_test="2")
         if user_id != "no_id":
@@ -76,11 +78,10 @@ def game_responses():
             except ValueError as e:
                 raise InvalidUsage(str(e), status_code=400)
 
+
     # Return game array based in arguments
     if user_id == "no_id":
         unsynced_array = return_game_array(unsynced_games)
-        for game in unsynced_array["game_list"]:
-            game["sync_path"] = "Not synced"
         if unsynced_array == "No games found on this machine":
             raise InvalidUsage(unsynced_array, status_code=418)
         else:
@@ -97,8 +98,6 @@ def game_responses():
         else:
             ## ** all_games = No, user_id = (user input) ** ##
             synced_array = return_game_array(synced_games)
-            for game in synced_array["game_list"]:
-                game.path = game.sync_path
             if synced_array == "No games found on this machine":
                 raise InvalidUsage(synced_array, status_code=418)
             else:
@@ -109,11 +108,10 @@ def backup_games():
     game_list = json.loads(request.data.decode("utf-8"))
     game_paths = simple_pickler(mode="read")
     games_received = [ game for i, game in enumerate(game_list) if game_list[game] == True]
-    # for game in game_list:
-    #     if game_list[game] == True:
-    #         games_received.append(game)
-    # for game in games_to_backup:
-    #     pass
-        #if game in games_to_backup.keys()
-    print(games_received)
+    games_to_backup = []
+    for game in game_paths:
+        if game["name"] in games_received:
+            games_to_backup.append({"name": game["name"], "path": game["path"]})
+    make_backups_to_zip(games_to_backup)
+    print(games_to_backup)
     return "ok"
