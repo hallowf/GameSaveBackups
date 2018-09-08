@@ -1,5 +1,4 @@
 import os, pickle, shutil, zipfile
-from app.Database.fetch_all_games import generate_games
 
 tmp_path = "tmp_saves"
 
@@ -43,7 +42,7 @@ def read_zip_file(zipped="ZippedBackups.zip"):
     return games
 
 
-def check_if_zipped(games, zipped=read_zip_file()):
+def check_if_zipped(games, zipped):
     for game in games:
         if game["name"] in zipped:
             print("Game:", game["name"])
@@ -67,3 +66,9 @@ def delete_from_list(games, name):
             print("lel")
         i = i + 1
     print(games)
+
+
+
+def make_backups_to_zip(games, file_name="ZippedBackups.zip"):
+    copy_saves_toTmp(games)
+    make_zip_file(file_name)
