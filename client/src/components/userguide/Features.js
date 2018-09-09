@@ -1,29 +1,37 @@
 import React from 'react'
 
 class Features extends React.Component {
+  constructor() {
+    super()
+    this.callReturnToIndex = this.callReturnToIndex.bind(this)
+  }
+
+  callReturnToIndex() {
+    this.props.returnToIndex()
+  }
+
   render() {
     return (
-      <div class="card" style="width:90%; margin:1em auto">
-        <div class="card-header bg-light">
-          <h5 class="card-title">Features</h5>
+      <div className="card">
+        <div className="card-header bg-light row justify-content-between">
+          <h5 className="card-title">Features</h5>
+          <button onClick={this.callReturnToIndex} className='btn btn-primary'>Return</button>
         </div>
-          <div class="card-body">
-            <h5 class="card-title">Easy to navigate UI</h5>
-              <p class="card-text">
+          <div className="card-body">
+            <h5 className="card-title">Easy to navigate UI</h5>
+              <p className="card-text">
                 As you probably noticed by now this program looks and feels like a website
-                , and it actually uses Google Chrome to display the program and allow you
-                to easily interact with it
+                ,
               </p>
-              <h5 class="card-title">Backup steam cloud saves</h5>
-                <p class="card-text">
-                  Since steam stores the saves for synced games in a very specific folder
-                  that is named after the user's Steam_ID3, the program only needs to know
-                  your ID3, so I created a simple function that converts your Steam_ID into
-                  a Steam_ID3
+              <h5 className="card-title">Backup steam cloud saves</h5>
+                <p className="card-text">
+                  Since steam stores the saves for synced games in a specific folder
+                  that is named after the users Steam_ID3, the program only needs to know
+                  your ID3, so the converts your Steam_ID into a Steam_ID3
                 </p>
-              <h5 class="card-title">All your saves in one zip file or multiple</h5>
-                <p class="card-text">
-                You can choose to add saves to your xip file, to replace the files inside it,
+              <h5 className="card-title">All your saves in one zip file or multiple</h5>
+                <p className="card-text">
+                You can choose to add saves to your zip file, to replace the files inside it,
                 or simply create a new zip file
                 </p>
           </div>

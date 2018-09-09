@@ -1,7 +1,16 @@
 import React from 'react'
 
 
-class UserGuideIndex extends React.Component {
+class HelpIndex extends React.Component {
+  constructor() {
+    super()
+    this.callHandleHelpPage = this.callHandleHelpPage.bind(this)
+    this.callFetchAllGames = this.callFetchAllGames.bind(this)
+  }
+
+  callFetchAllGames (event) {
+    this.props.fetchAllGames(event.target.id)
+  }
 
   callHandleHelpPage(event) {
     this.props.handleHelpPage(event.target.id)
@@ -18,7 +27,7 @@ class UserGuideIndex extends React.Component {
               <img className="card-img-top" src="" alt="How it works"/>
               <div className="card-body">
                 <h5 className="card-title">How It Works</h5>
-                <button href="" className="btn btn-primary">View</button>
+                <button id='howitworks' onClick={this.callHandleHelpPage} className="btn btn-primary">View</button>
               </div>
             </div>
           </div>
@@ -27,8 +36,8 @@ class UserGuideIndex extends React.Component {
             <div className="card w-75" >
               <img className="card-img-top" src="" alt="How to use"/>
               <div className="card-body">
-                <h5 className="card-title">How To Use</h5>
-                <button href="" className="btn btn-primary">View</button>
+                <h5 className="card-title">User Guide</h5>
+                <button id='userguide' onClick={this.callHandleHelpPage} className="btn btn-primary">View</button>
               </div>
             </div>
           </div>
@@ -52,7 +61,7 @@ class UserGuideIndex extends React.Component {
               <img className="card-img-top" src="" alt="Troubleshooting"/>
               <div className="card-body">
                 <h5 className="card-title">Troubleshooting</h5>
-                <button href="" className="btn btn-primary">View</button>
+                <button id='troubleshooting' onClick={this.callHandleHelpPage} className="btn btn-primary">View</button>
               </div>
             </div>
           </div>
@@ -62,7 +71,7 @@ class UserGuideIndex extends React.Component {
               <img className="card-img-top" src="" alt="Game database"/>
               <div className="card-body">
                 <h5 className="card-title">Game Database</h5>
-                <button href="" className="btn btn-primary">View</button>
+                <button id='gamedatabase' onClick={this.callFetchAllGames} className="btn btn-primary">View</button>
               </div>
             </div>
           </div>
@@ -73,4 +82,4 @@ class UserGuideIndex extends React.Component {
   }
 }
 
-export default UserGuideIndex
+export default HelpIndex
