@@ -5,7 +5,7 @@ import GameUtilities from './GameUtilities.js'
 import GameMapper from './GameMapper.js'
 import GameCheckboxMapper from './GameCheckboxMapper.js'
 import GameErrorHandler from './GameErrorHandler.js'
-
+import SimpleAlert from './SimpleAlert.js'
 
 const baseUrl = window.location.hostname === 'localhost' ?
   window.location.protocol + '//' + document.domain + ':2890/':
@@ -24,6 +24,7 @@ class ControlCards extends React.Component {
       games: '',
       filteredGames: '',
       checkedGames: {},
+      waitingBackups: 'no',
       userSearch: ''
     }
   }
@@ -91,17 +92,20 @@ class ControlCards extends React.Component {
   }
   requestBackup() {
     let checkedGames = this.state.checkedGames
-    console.log(checkedGames)
+    this.setState({waitingBackups: 'yes'})
     checkedGames = JSON.stringify(checkedGames)
     fetch(baseUrl + 'api/backup',
     {
       method: 'POST',
       body: checkedGames
+    }).then(response => {
+      this.setState({waitingBackups: 'no'})
     })
   }
   render() {
     let gamesJsx = null
     let gameUtilities = null
+    let waitingBackups = null
     if (this.state.games !== '') {
       gamesJsx = this.state.games
       gameUtilities = <GameUtilities cleanGames={this.cleanGames} requestBackup={this.requestBackup} searchFilter={this.searchFilter} />
@@ -109,8 +113,12 @@ class ControlCards extends React.Component {
     if (this.state.userSearch !== '') {
       gamesJsx = this.state.filteredGames
     }
+    if (this.state.waitingBackups === 'yes') {
+      waitingBackups = <SimpleAlert />
+    }
     return (
       <div>
+        {waitingBackups}
         <div className='mt-3'>
           {gameUtilities}
         </div>
