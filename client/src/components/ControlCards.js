@@ -1,10 +1,10 @@
 import React from 'react'
-import UnsyncedGamesCard from './UnsyncedGamesCard.js'
-import SyncedGamesCard from './SyncedGamesCard.js'
-import GameUtilities from './GameUtilities.js'
-import GameMapper from './GameMapper.js'
-import GameCheckboxMapper from './GameCheckboxMapper.js'
-import GameErrorHandler from './GameErrorHandler.js'
+import UnsyncedGamesCard from './gameutilities/UnsyncedGamesCard.js'
+import SyncedGamesCard from './gameutilities/SyncedGamesCard.js'
+import GameUtilities from './gameutilities/GameUtilities.js'
+import GameMapper from './gameutilities/GameMapper.js'
+import GameCheckboxMapper from './gameutilities/GameCheckboxMapper.js'
+import GameErrorHandler from './gameutilities/GameErrorHandler.js'
 import SimpleAlert from './SimpleAlert.js'
 
 const baseUrl = window.location.hostname === 'localhost' ?
