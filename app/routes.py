@@ -70,6 +70,8 @@ def game_responses():
                 synced_games = get_synced_games(convert_id(user_id), gsb_test="2")
             except ValueError as e:
                 raise InvalidUsage(str(e), status_code=400)
+    elif route_testing == "2":
+        unsynced_games = get_unsynced_games(gsb_test="1")
     else:
         unsynced_games = get_unsynced_games()
         if user_id != "no_id":

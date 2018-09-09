@@ -10,10 +10,10 @@ class Navbar extends React.Component {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
-            <li className="nav-item">
+            <li className="nav-item p-2">
               {this.props.Home}
             </li>
-            <li className="nav-item">
+            <li className="nav-item p-2">
               {this.props.HelpPage}
             </li>
           </ul>
