@@ -18,7 +18,7 @@ class HelpIndex extends React.Component {
 
   render() {
     return (
-      <div className='container'>
+      <div className='container mt-5'>
 
         <div className="row mt-3 mx-auto justify-content-between" align="center">
 

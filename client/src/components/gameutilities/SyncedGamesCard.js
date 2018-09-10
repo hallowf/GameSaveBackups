@@ -11,7 +11,7 @@ class SyncedGamesCard extends React.Component {
   }
 
   updateID(event) {
-    this.setState({userID: event.target.value.substr(0, 30)})
+    this.setState({userID: event.target.value.substr(0, 60)})
   }
   callSearchSynced() {
     this.props.searchSynced(this.state.userID)
