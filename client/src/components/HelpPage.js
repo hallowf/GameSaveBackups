@@ -53,6 +53,8 @@ class HelpPage extends React.Component {
 
   returnToIndex() {
     this.setState({page: 'index'})
+    this.setState({games: ''})
+    this.setState({filteredGames: ''})
   }
 
   handleHelpPage(page) {
@@ -79,7 +81,7 @@ class HelpPage extends React.Component {
     }
     if (this.state.games !== '') {
       page = <div className='row'>{this.state.games}</div>
-      gameDatabaseUtilities = <GameDatabaseFilter searchFilter={this.searchFilter}/>
+      gameDatabaseUtilities = <GameDatabaseFilter searchFilter={this.searchFilter} returnToIndex={this.returnToIndex}/>
     }
     if (this.state.userSearch !== '') {
       page = <div className='row'>{this.state.filteredGames}</div>
