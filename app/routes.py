@@ -61,28 +61,14 @@ def game_responses():
     all_games = request.args.get("all_games")
     route_testing = request.args.get("route_testing")
 
-
-    #### Check if in testing mode
-    if route_testing == "1":
-        unsynced_games = get_unsynced_games(gsb_test="2")
-        if user_id != "no_id":
-            try:
-                synced_games = get_synced_games(convert_id(user_id), gsb_test="2")
-            except ValueError as e:
-                raise InvalidUsage(str(e), status_code=400)
-    elif route_testing == "2":
-        unsynced_games = get_unsynced_games(gsb_test="1")
-    else:
-        unsynced_games = get_unsynced_games()
-        if user_id != "no_id":
-            try:
-                synced_games = get_synced_games(convert_id(user_id))
-            except ValueError as e:
-                raise InvalidUsage(str(e), status_code=400)
-
-
     # Return game array based in arguments
     if user_id == "no_id":
+        if route_testing == "1":
+            unsynced_games = get_unsynced_games(gsb_test="2")
+        elif route_testing == "2":
+            unsynced_games = get_unsynced_games(gsb_test="1")
+        else:
+            unsynced_games = get_unsynced_games()
         unsynced_array = return_game_array(unsynced_games)
         if unsynced_array == "No games found on this machine":
             raise InvalidUsage(unsynced_array, status_code=418)
@@ -99,6 +85,17 @@ def game_responses():
                 raise InvalidUsage(str(e), status_code=400)
         else:
             ## ** all_games = No, user_id = (user input) ** ##
+            try:
+                converted_id = convert_id(user_id)
+            except ValueError as e:
+                raise InvalidUsage(str(e), status_code=400)
+            if route_testing == "1":
+                synced_games = get_synced_games(converted_id, gsb_test="2")
+            elif route_testing == "2":
+                synced_games = get_synced_games(converted_id, gsb_test="1")
+            else:
+                unsynced_games = get_unsynced_games
+            synced_games = get_synced_games(converted_id)
             synced_array = return_game_array(synced_games)
             if synced_array == "No games found on this machine":
                 raise InvalidUsage(synced_array, status_code=418)
