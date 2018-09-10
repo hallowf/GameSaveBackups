@@ -90,6 +90,8 @@ def get_unsynced_games(gameDatabase = save_database, gsb_test = GSB_TEST):
 def get_synced_games(user_id, gameDatabase = save_database, gsb_test = GSB_TEST):
     games = []
     game_paths = []
+
+    ## Check GSB_TEST env var
     if gsb_test == "1":
         for game in gameDatabase:
             game_checker(game, games, game_paths, "no", None)
@@ -97,30 +99,39 @@ def get_synced_games(user_id, gameDatabase = save_database, gsb_test = GSB_TEST)
         return games
     if gsb_test == "2": # pragma: no cover
         return [{"Error": "No games found on this machine"}]
+
+    ### Windows game saves search
     if current_os.upper() == "WINDOWS": # pragma: no win cover
         drive_letters = win32api.GetLogicalDriveStrings().split("\000")[:-1]
         for game in gameDatabase:
             game.found = False
+
+            # Replace XXXXX by user_id and check if path exists
             new_sync = game.sync_path.replace("XXXXX", str(user_id))
-            for drive in drive_letters:
-                if os.path.isdir(new_sync) and game.found == False:
-                    print("Found " + game.name + " at " + game.sync_path)
-                    game_checker(game, games, game_paths, "yes", new_sync)
-                else:
-                    new_path = new_sync.replace("C:\\", drive)
-                    if os.path.isdir(new_path) and game.found == False:
-                        print("Found " + game.name + " at " + new_path)
-                        game_checker(game, games, game_paths, "yes", new_sync)
-                    elif os.path.isdir(new_path) == False and game.found == False:
-                        print("Couldn't find " + game.name + " at " + new_path)
+            if os.path.isdir(new_sync) and game.found == False:
+                print("Found " + game.name + " at " + game.sync_path)
+                game_checker(game, games, game_paths, "yes", new_sync)
+            else:
+                # Replace "C:\\" with other drives if there are other drives
+                if len(drive_letters) > 1:
+                    for drive in drive_letters:
+                        new_path = new_sync.replace("C:\\", drive)
+                        if os.path.isdir(new_path) and game.found == False:
+                            print("Found " + game.name + " at " + new_path)
+                            game_checker(game, games, game_paths, "yes", new_sync)
+                        elif os.path.isdir(new_path) == False and game.found == False:
+                            print("Couldn't find " + game.name + " at " + new_path)
+
         if not games:
             return  [{"Error": "No games found on this machine"}]
         else:
             simple_pickler("write", game_paths)
             return games
+    ### Linux game saves search
     else:
         for game in gameDatabase:
             game.found = False
+            # Replace XXXXX by user_id and check if path exists
             new_sync = game.sync_path.replace("XXXXX", str(user_id))
             if os.path.isdir(new_sync) and game.found == False:
                 print("Found game at:" + new_sync)
@@ -133,35 +144,88 @@ def get_synced_games(user_id, gameDatabase = save_database, gsb_test = GSB_TEST)
 
 
 
+#### function to fetch all games
+### # NOTE: It is reccomended to first check synced games and then the local paths,
+### # since the local path exists even if the game is synced but the more recent saves,
+### # will be  in the steam sync path
+
 def get_all_games(user_id, game_database=save_database, gsb_test=GSB_TEST):
     games = []
     game_paths = []
-    if current_os.upper() == "WINDOWS":
+
+    ### Windows game saves search
+    if current_os.upper() == "WINDOWS": # pragma: no win cover
         drive_letters = win32api.GetLogicalDriveStrings().split("\000")[:-1]
         for game in save_database:
             game.found = False
+
+
+            ## Synced Games ==========>
+            # Replace XXXXX by user_id and check if path exists
+            print("uid ====>",user_id)
+            new_sync = game.sync_path.replace("XXXXX", user_id)
+            print("new_sync =====>",new_sync)
+            #print("searching", game.name, "at", new_sync)
+            if os.path.isdir(new_sync) and game.found == False:
+                game_checker(game, games, game_paths, "yes", new_sync)
+                print("Found game at:", game.path)
+            # else:
+            #     print("Couldn't find", game.name, "at", new_sync)
+            # Replace "C:\\" with other drives if there are other drives
+            if len(drive_letters) > 1:
+                for drive in drive_letters:
+                    # No need to check C:\\ again
+                    if drive != "C:\\":
+                        new_path = new_sync.replace("C:\\", drive)
+                        #print("searching", game.name, "at", new_path)
+                        if os.path.isdir(new_path) and game.found == False:
+                            game_checker(game, games, game_paths, "yes", new_path)
+                            print("Found game at:", game.path)
+                        # else:
+                        #     print("Couldn't find", game.name, "at", new_path)
+
+
+            ## Unsynced Games ===========>
+            # If the game was not found by sync_path check local path
+            #print("searching", game.name , "at", game.path)
             if os.path.isdir(game.path) and game.found == False:
-                game_checker(games, game_paths, "no")
+                game_checker(game, games, game_paths, "no")
+                print("Found game at:", game.path)
+            # else:
+            #     print("Couldn't find", game.name, "at", game.path)
+            # check on other drives except C:\\
+            if len(drive_letters) > 1:
+                for drive in drive_letters:
+                    if drive != "C:\\":
+                        new_path = game.path.replace("C:\\", drive)
+                        #print("searching", game.name, "at", new_path)
+                        if os.path.isdir(new_path) and game.found == False:
+                            game_checker(game, games, game_paths, "no", new_path)
+                            print("Found game at:", game.path)
+                        # else:
+                        #     print("Couldn't find", game.name, "at", new_path)
+            if game.found == False:
+                print("didn't find", game.name)
+
+        # Write the game paths to a pickle for later use, and return games
+        simple_pickler("write", game_paths)
+        return games
+
+
+    ### Linux game saves search
+    else:
+        for game in save_database:
+            game.found = False
+
+            new_sync = game.sync_path.replace("XXXXX", user_id)
+            if os.path.isdir(new_sync) and game.found == False:
+                game_checker(game, games, game_paths, "yes", new_sync)
             else:
-                print("Couldn't find " + game.name + " at " + game.path)
-            if game.found == False:
-                for drive in drive_letters:
-                    new_path = game.path.replace("C:\\", drive)
-                    if os.path.isdir(new_path):
-                        game_checker(games, game_paths, "no")
-                    else:
-                        print("Couldn't find " + game.name + " at " + new_path)
-            if game.found == False:
-                new_sync = game.sync_path.replace("XXXXX", str(user_id))
-                if os.path.isdir(new_sync) and game.found == False:
-                    game_checker(games, game_paths, "yes", new_sync)
-                else:
-                    print("Couldn't find " + game.name + " at " + new_sync)
-                for drive in drive_letters:
-                    new_path = new_sync.replace("C:\\", drive)
-                    if os.path.isdir(new_path):
-                        game_checker(games, game_paths, "yes", new_path)
-                    else:
-                        print("Couldn't find " + game.name + " at " + new_path)
+                print()
+            if os.path.isdir(game.path) and game.found == False:
+                game_checker(game, games, game_paths, "no", None)
+            else:
+                print("Couldn't find", game.name, "at", game.path)
+
         simple_pickler("write", game_paths)
         return games
