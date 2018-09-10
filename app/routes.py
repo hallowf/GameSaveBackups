@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 from app import app
 from app.Database.db_utilities import simple_pickler
-from app.Database.fetch_all_games import get_synced_games, get_unsynced_games
+from app.Database.fetch_all_games import get_synced_games, get_unsynced_games, get_all_games
 from app.errorHandling.raise_invalid_usage import InvalidUsage
 from app.commonResponses.game_array_response import return_game_array
 from app.utilities.id_converter import convert_id
@@ -75,14 +75,18 @@ def game_responses():
         else:
             return jsonify(unsynced_array)
     else:
-        # # TODO: Not implemented
         if all_games == "yes": # pragma: no cover
             try:
                 converted_id = convert_id(user_id)
-                games_array = "Null" # get_all_games(converted_id) ##FIXME: this function does not exist
-                raise InvalidUsage("Not implemented", status_code=501)
             except ValueError as e:
                 raise InvalidUsage(str(e), status_code=400)
+            all_games = get_all_games(converted_id)
+            all_games_array = return_game_array(all_games)
+            if all_games_array == "No games found on this machine":
+                raise InvalidUsage(unsynced_array, status_code=418)
+            else:
+                return jsonify(all_games_array)
+
         else:
             ## ** all_games = No, user_id = (user input) ** ##
             try:
@@ -94,13 +98,12 @@ def game_responses():
             elif route_testing == "2":
                 synced_games = get_synced_games(converted_id, gsb_test="1")
             else:
-                unsynced_games = get_unsynced_games
-            synced_games = get_synced_games(converted_id)
-            synced_array = return_game_array(synced_games)
-            if synced_array == "No games found on this machine":
-                raise InvalidUsage(synced_array, status_code=418)
-            else:
-                return jsonify(synced_array)
+                synced_games = get_synced_games(converted_id)
+                synced_array = return_game_array(synced_games)
+                if synced_array == "No games found on this machine":
+                    raise InvalidUsage(synced_array, status_code=418)
+                else:
+                    return jsonify(synced_array)
 
 @app.route("/api/backup", methods=["POST"])
 def backup_games():
