@@ -18,6 +18,9 @@ def game_checker(game_obj, game_list, game_paths, synced, path_to_sync=None):
     if synced == "yes" and path_to_sync is not None:
         game_obj.path = path_to_sync
         game_obj.sync_path = "yes"
+    elif synced == "no" and path_to_sync != None:
+        game_obj.path = path_to_sync
+        game.obj.sync_path = "no"
     else:
         game_obj.sync_path = "no"
     game_obj.found = True
