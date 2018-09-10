@@ -16,6 +16,7 @@ class ControlCards extends React.Component {
     super(props)
     this.searchUnsynced = this.searchUnsynced.bind(this)
     this.searchSynced = this.searchSynced.bind(this)
+    this.searchAll = this.searchAll.bind(this)
     this.cleanGames = this.cleanGames.bind(this)
     this.searchFilter = this.searchFilter.bind(this)
     this.handleChecked = this.handleChecked.bind(this)
@@ -70,7 +71,11 @@ class ControlCards extends React.Component {
     fetch(baseUrl + 'api/games?all_games=yes&user_id=' + userID)
       .then(res => res.json()
         .then(games => {
-            console.log(games)
+          GameErrorHandler(games)
+          let checkedGames = GameCheckboxMapper(games)
+          this.setState({checkedGames})
+          games = GameMapper(games, this.handleChecked)
+          this.setState({games})
         })
       )
       .catch(e => {
@@ -127,7 +132,7 @@ class ControlCards extends React.Component {
         </div>
         <div className='row m-5'>
           <UnsyncedGamesCard searchUnsynced={this.searchUnsynced}/>
-          <SyncedGamesCard searchSynced={this.searchSynced}/>
+          <SyncedGamesCard searchSynced={this.searchSynced} searchAll={this.searchAll}/>
         </div>
       </div>
     )
