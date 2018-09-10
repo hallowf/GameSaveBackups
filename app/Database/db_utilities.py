@@ -14,7 +14,7 @@ def simple_pickler(mode, object=False , path="game_paths.pckl"):
 
 ### This modifies the game_obj properties and appends to game_list and game_paths
 ### the modified versions
-def game_checker(game_obj, game_list, game_paths, synced, path_to_sync):
+def game_checker(game_obj, game_list, game_paths, synced, path_to_sync=None):
     if synced == "yes" and path_to_sync is not None:
         game_obj.path = path_to_sync
         game_obj.sync_path = "yes"

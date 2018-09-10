@@ -39,7 +39,6 @@ save_database = json.load(open("app/Database/database.json"))
 
 ### Function to return game objects
 def load_game(db_item):
-    current_os = platform.system()
     path = ""
     sync_path = ""
     [name, win_path, win_sync, lin_path, lin_sync] = db_item
@@ -53,48 +52,49 @@ def load_game(db_item):
 
 
 ### Assign to save_database a list with each game and it's attributes from the database
-save_database = list(map(load_game, save_database))
 
-
+### Do not do this it's not reccomended in python3 see: https://docs.python.org/3.0/whatsnew/3.0.html#views-and-iterators-instead-of-lists
+### save_database = list(map(load_game, save_database))
+### Use a list comprehension like so
+save_database = [load_game(game) for game in save_database]
 
 ### Functions to yield games to dict
 
 ## Simple function that returns all games
 ## Wont work for steam sync
 def get_unsynced_games(gameDatabase = save_database, gsb_test = GSB_TEST):
-    g = []
+    games = []
     game_paths = []
     if gsb_test == "1":
         for game in gameDatabase:
-            game_checker(game, g, game_paths, "no", None)
+            game_checker(game, games, game_paths, "no")
             simple_pickler("write", game_paths)
             #g.append(game.to_dict())
-        return g
+        return games
     if gsb_test == "2":
         return [{"Error": "No games found on this machine"}]
     for game in gameDatabase:
         game.found = False
         if os.path.isdir(game.path) and game.found == False:
-            game_checker(game, g, game_paths, "no", None)
-    if not g:
+            game_checker(game, games, game_paths, "no")
+    if not games:
         return [{"Error": "No games found on this machine"}]
     else:
         simple_pickler("write", game_paths)
-        return g
+        return games
 
 
 
 ### Check the OS and searches for the games in steam library's across all hard drives
 ## TODO: At the moment it can only search all drives in windows, add linux functionality
 def get_synced_games(user_id, gameDatabase = save_database, gsb_test = GSB_TEST):
-    user_id = convert_id(user_id)
-    g = []
+    games = []
     game_paths = []
     if gsb_test == "1":
         for game in gameDatabase:
-            game_checker(game, g, game_paths, "no", None)
+            game_checker(game, games, game_paths, "no", None)
             simple_pickler("write", game_paths)
-        return g
+        return games
     if gsb_test == "2": # pragma: no cover
         return [{"Error": "No games found on this machine"}]
     if current_os.upper() == "WINDOWS": # pragma: no win cover
@@ -105,28 +105,63 @@ def get_synced_games(user_id, gameDatabase = save_database, gsb_test = GSB_TEST)
             for drive in drive_letters:
                 if os.path.isdir(new_sync) and game.found == False:
                     print("Found " + game.name + " at " + game.sync_path)
-                    game_checker(game, g, game_paths, "yes", new_sync)
+                    game_checker(game, games, game_paths, "yes", new_sync)
                 else:
                     new_path = new_sync.replace("C:\\", drive)
                     if os.path.isdir(new_path) and game.found == False:
                         print("Found " + game.name + " at " + new_path)
-                        game_checker(game, g, game_paths, "yes", new_sync)
+                        game_checker(game, games, game_paths, "yes", new_sync)
                     elif os.path.isdir(new_path) == False and game.found == False:
                         print("Couldn't find " + game.name + " at " + new_path)
-        if not g:
+        if not games:
             return  [{"Error": "No games found on this machine"}]
         else:
             simple_pickler("write", game_paths)
-            return g
+            return games
     else:
         for game in gameDatabase:
             game.found = False
             new_sync = game.sync_path.replace("XXXXX", str(user_id))
             if os.path.isdir(new_sync) and game.found == False:
                 print("Found game at:" + new_sync)
-                game_checker(game, g, game_paths, "yes", new_sync)
-        if not g:
+                game_checker(game, games, game_paths, "yes", new_sync)
+        if not games:
             return [{"Error": "No games found on this machine"}]
         else:
             simple_pickler("write", game_paths)
-            return g
+            return games
+
+
+
+def get_all_games(user_id, game_database=save_database, gsb_test=GSB_TEST):
+    games = []
+    game_paths = []
+    if current_os.upper() == "WINDOWS":
+        drive_letters = win32api.GetLogicalDriveStrings().split("\000")[:-1]
+        for game in save_database:
+            game.found = False
+            if os.path.isdir(game.path) and game.found == False:
+                game_checker(games, game_paths, "no")
+            else:
+                print("Couldn't find " + game.name + " at " + game.path)
+            if game.found == False:
+                for drive in drive_letters:
+                    new_path = game.path.replace("C:\\", drive)
+                    if os.path.isdir(new_path):
+                        game_checker(games, game_paths, "no")
+                    else:
+                        print("Couldn't find " + game.name + " at " + new_path)
+            if game.found == False:
+                new_sync = game.sync_path.replace("XXXXX", str(user_id))
+                if os.path.isdir(new_sync) and game.found == False:
+                    game_checker(games, game_paths, "yes", new_sync)
+                else:
+                    print("Couldn't find " + game.name + " at " + new_sync)
+                for drive in drive_letters:
+                    new_path = new_sync.replace("C:\\", drive)
+                    if os.path.isdir(new_path):
+                        game_checker(games, game_paths, "yes", new_path)
+                    else:
+                        print("Couldn't find " + game.name + " at " + new_path)
+        simple_pickler("write", game_paths)
+        return games
