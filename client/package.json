@@ -11,7 +11,7 @@
     "react-dom": "^16.4.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "^3.4.1"
   },
   "scripts": {
     "win-start": "set PORT=2891 && react-scripts start",
